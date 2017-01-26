@@ -1,0 +1,13 @@
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\Fabrics.mdf
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\Fabrics_log.ldf
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\EntityFramework.dll
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\EntityFramework.SqlServer.dll
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\EntityFramework.xml
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\EntityFramework.SqlServer.xml
+c:\users\administrator\documents\visual studio 2015\Projects\ConsoleApplication1\ConsoleApplication1\bin\Debug\zh-Hans\EntityFramework.resources.dll
