@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Register</title>
+</head>
+
+<body>
+    <h1>Register</h1>
+    <form>
+        <label for="first">First Name:</label>
+        <input id="first" name="fistname" type="text" placeholder="Jhon" required>
+        <label for="last">Last Name:</label>
+        <input id="last" name="lastname" type="text" placeholder="Smith" required>
+        <div>
+            <label for="male">Male</label>
+            <input id="male" name="gender" type="radio">
+            <label for="female">Female</label>
+            <input id="female" name="gender" type="radio">
+        </div>
+        <div>
+            <label>
+                Email:
+                <input name="email" type="email" placeholder="your email" required>
+            </label>
+            <label>
+                Password:
+                <input name="password" title="Password must contain at least 6 characters, including UPPER/lowercase and numbers" type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" onchange="
+  this.setCustomValidity(this.validity.patternMismatch ? this.title : '');
+  ">
+            </label>
+        </div>
+        <div>
+            <label>Birthday:
+                <select name="year">
+                    <option value="year">Year</option>
+                    <option value="2017">2017</option>
+                    <option value="2016">2016</option>
+                </select>
+                <select name="month">
+                    <option value="month">Month</option>
+                    <option value="Jan">Jan</option>
+                    <option value="Jan">Feb</option>
+                </select>
+                <select name="day">
+                    <option value="day">Day</option>
+                    <option value="1">1</option>
+                </select>
+            </label>
+        </div>
+        <div>
+            <label for="agreement">I agree to the terms and condition</label>
+            <input id="agreement" type="checkbox" required>
+        </div>
+        <button>Submit</button>
+    </form>
+</body>
+
+</html>

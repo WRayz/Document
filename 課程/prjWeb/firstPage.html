@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Things I've Learned</title>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <!-- action - where the form send data to -->
+    <!-- method - what Http method (get/post) -->
+    <!--<form action="" method="post">
+		<label>
+			User name：
+			<input name="username" type="text" placeholder="username">
+		</label>
+		<label>
+			Password：
+			<input name="password" type="password" placeholder="password">
+		</label>
+		<button>Submit</button>
+	</form> -->
+    <!-- label 的 for 配合 input 的 id 就可以綁定 -->
+    <!-- input 的 name 打出來就可以讓 query string 帶資料 -->
+    <!-- input 的 required 為 html 的驗證 -->
+    <form action="" method="get">
+        <label for="username">User name：</label>
+        <input id="username" name="email" type="email" placeholder="email" required/>
+        <label for="password">Password：</label>
+        <input id="password" name="password" type="password" placeholder="password" required/>
+        <button>Submit</button>
+    </form>
+    <!--<table rules="groups">
+		<thead>
+			<tr>
+				<th>Image</th>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Evolves To</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th><img src="http://img4.wikia.nocookie.net/__cb20140328190757/pokemon/images/thumb/2/21/001Bulbasaur.png/200px-001Bulbasaur.png"></th>
+				<th>Bulbasaur</th>
+				<th>Grass/Poison</th>
+				<th><a href="http://pokemon.wikia.com/wiki/Ivysaur">Ivysaur</a></th>
+			</tr>
+			<tr>
+				<th><img src="http://img4.wikia.nocookie.net/__cb20140724195345/pokemon/images/thumb/7/73/004Charmander.png/200px-004Charmander.png"></th>
+				<th>Charmander</th>
+				<th>Fire</th>
+				<th><a href="http://pokemon.wikia.com/wiki/Charmeleon">Charmeleon</a></th>
+			</tr>
+			<tr>
+				<th><img src="http://img1.wikia.nocookie.net/__cb20140328191525/pokemon/images/thumb/3/39/007Squirtle.png/200px-007Squirtle.png"></th>
+				<th>Squirtle</th>
+				<th>Water</th>
+				<th><a href="http://pokemon.wikia.com/wiki/Wartortle">Wartortle</a></th>
+			</tr>
+		</tbody>
+	</table> -->
+</body>
+
+</html>
