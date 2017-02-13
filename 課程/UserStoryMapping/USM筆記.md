@@ -2,7 +2,7 @@
 
 # User Story Mapping 筆記
 
-2017.2.12 Ray
+2017.2.12 - 13 Ray
 
 ---
 
@@ -36,14 +36,14 @@
 
 14. 建構 User Story Mapping 六步驟：
 
-   1. 決定問題邊界
-   2. 描繪及對照整體圖像
-   3. 探索 Explore
-   4. 分割 release 策略
+15. 決定問題邊界
+16. 描繪及對照整體圖像
+17. 探索 Explore
+18. 分割 release 策略
    5. 分割學習策略
    6. 分割開發策略
 
-15. (下)實際演練 I：選取題目進行探索，利用 Impact Mapping 去問 Why、Who、How，決定問題邊界。
+19. (下)實際演練 I：選取題目進行探索，利用 Impact Mapping 去問 Why、Who、How，決定問題邊界。
 
    > tips：透過 Who 去問 Why，比較能聚焦在要解決甚麼需求、問題。透過 Who 對 How 問 Why，比較能校正 How 的必要性。
 
@@ -64,17 +64,32 @@
 ## Reflective 
 
 1. 團隊對 User Story Mapping 有接受意願，面對面討論，使用低科技（便利貼），建立共識的速度會很快。
+
 2. 第二個暖身活動重現了文件災難，如同綜藝節目的雞同鴨講，比如我希望把第一人的文字描述全部畫出來，但時間不夠畫不完，後面的人就亂猜了。再比如我寫咖啡店（未指名），到第四人時就變 Startbucks。解釋出來的狀況受到很多影響：不同人的檢視角度、使用名詞的混淆，增加非原本描述的 "描述"，原描述物件被改變．．．最後的結果很考驗第一人的描述是否簡單明瞭，後面的人是否正確理解。
+
 3. 早上實際演練能透過"起床到上課"的過程，能迅速完成體會 User Story Mapping 的形成過程，我覺得很棒。
+
 4. 下午的演練，我覺得角色的換位思考很有幫助，進入角色的情境很重要。
+
 5. 下午對於實際演練使用 Impact Mapping 來進行 User Story Mapping 第一步，讓我很疑惑，後來搞懂它只是用來幫助 建構 User Story Mapping 第一步、第二步的思考工具，有覺得解惑。
+
 6. 下午的實際演練在第三步、第四步時，就發生 Why 的 Scope 需要調整，因為新的 How 而有新的 Why ，這時都要討論其 Why、How 的價值性，有練習到很好！
+
 7. 早上的演練情境，透過 User Story Mapping 列出實際在 run 的過程，就像恆豐專案；下午的演練的 User Story Mapping 探索情境，就可用在網管專案。
+
 8. **下午講的分割開發策略，與 release 策略，我有些搞混，這兩者的差別是什麼？**
+
+   ```tex
+   release 策略像是任務切割，但比較沒談功能面。
+   分割開發策略，就討論功能開發上。
+   補充：User Story Mapping　步驟4~6，不一定嚴格分割，有時是互相引用。
+   ```
+
+   ​
 
 ## Interpretive 
 
-1. User Story 目的是來開啟開發者與使用者的對話，User Story Mapping 目的是透過彼此的協同合作，建立共識，幫助彼此拉高視角看見地圖全貌。
+1. User Story 目的是來開啟開發者與使用者的對話，User Story Mapping 目的是透過彼此的協同合作，建立共識，幫助彼此拉高視角看見地圖全貌，幫助開發者避免重工。
 2. User Story，無法鉅細靡遺的描述，主要是用來幫助回憶，這裡我提兩個問題：
    1. 卡片描述發生一種情況，事後看不懂。此問題回到**不同工具解決不同事**，User Story Mapping 是用來幫助描述/回憶故事，不是記錄所有細節，細節可用其他方式呈現補充在卡片旁邊（比如照片）。
    2. 有沒有一張卡片拆兩張的情形？答：正常都有，但在每次檢視 USM 的迭代過程，都可以對 User Story Mapping 調整。
@@ -88,4 +103,29 @@
 1. 用今天學到的 User Story Mapping，再試著用恆豐的 User Story Mapping 講故事，看是否有卡的地方，可能就是不清楚或是有問題的地方。
 2. 用今天學到的 Impact Mapping，來看恆豐專案的 User Story Mapping，是否有要再調整的地方。
 3. 試著用下午的演練方式，想一下網管的 Impact Mapping 和 User Story Mapping 。
-4. 分割開發策略與 release 策略還要再搞清楚。
+
+---
+
+# 活動照片
+
+## Impact Mapping
+
+<img src=".\Images\Impact Mapping.JPG" width="300px" align="left"></img>
+
+
+
+## 早實際演練 II
+
+<img src=".\Images\早上實際演練 II.JPG" width="800px" align="left"></img>
+
+## 早上實際演練 V
+
+<img src=".\Images\早上實際演練 V.JPG" width="800px" align="left"></img>
+
+## 下午實際演練
+
+<img src=".\Images\下午實際演練.JPG" width="800px" align="left"></img>
+
+## 提問
+
+<img src=".\Images\提問.JPG" width="800px" align="left"></img>
