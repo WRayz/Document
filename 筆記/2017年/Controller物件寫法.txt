@@ -1,0 +1,20 @@
+1.
+
+view
+=> add (type, value);
+
+2.
+
+view
+=> add (type);
+
+controller
+=> switch case 
+
+
+3.
+view
+=> signal.add / mix.add / rest.add
+
+controller
+=> signal.add / mix.add / rest.add => add(type, value)

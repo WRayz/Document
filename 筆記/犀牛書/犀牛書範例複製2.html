@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JavaScript Loan Calculator</title>
+	<style> /*這是CSS樣式表: 它為程式輸出加上樣式*/
+	.output { font-weight: bold; } /*計算出來的數值用粗體*/
+	#payment { text-decoration: underline; } /*套用至 id="payment" 的元素*/
+	#graph { border: solid black 1px; } /*圖表有簡單的邊框*/
+	th, td {vertical-align: top; } /*讓表格的儲存格置頂*/
+	</style>	
+</head>
+<body>
+<!--
+	這是一個HTML表格，內含<input>元素讓使用者輸入資料
+	以及讓程式顯示結果的<span>元素
+	這些元素有諸如 "interest" 或 "years" 這類的 id。
+	這些 id 用在緊接於表格之後的 JavaScript 程式碼。
+	請注意有些 input 元素定義了 "onchange" 或 "onclick" 事件處理器，
+	它們指定當使用者輸入或點擊時要被執行的 JavaScript 程式碼。
+-->
+<table>
+	<tr>
+		<th>Enter Loan Data:</th>
+		<td></td>
+		<th>Load Balance, Cumulative Equity, and Interest Payments</th>
+	</tr>
+	<tr>
+		<td>Amount of the loan ($):</td>
+		<td><input id="amount" onchange="calculate();"></td>
+		<td rowspan=8>
+			<canvas id="graph" width="400" height="250"></canvas>
+		</td>
+	</tr>
+	<tr>
+		<td>Annal interest (%):</td>
+		<td><input id="apr" onchange="calculate();"></td>
+	</tr>
+	<tr>
+		<td>Repayment period (year):</td>
+		<td><input id="years" onchange="calculate();"></td>
+	</tr>
+	<tr>
+		<td>Zipcode (to find lenders):</td>
+		<td><input id="zipcode" onchange="calculate();"></td>
+	</tr>
+	<tr>
+		<th>Approximate Payments:</th>
+		<td><button onclick="calculate();">Calculate</button></td>
+	</tr>
+	<tr>
+		<td>Monthly payment:</td>
+		<td>$<span class="output" id="payment"></span></td>
+	</tr>
+	<tr>
+		<td>Total payment:</td>
+		<td>$<span class="output" id="total"></span></td>
+	</tr>
+	<tr>
+		<td>Total interestL</td>
+		<td>$<span class="output" id="totalinterest"></span></td>
+	</tr>
+	<tr>
+		<th>Sponsors:</th>
+		<td colspan="2">
+			Apply for your loan with one of these fine lenders:
+			<div id="lenders"></div>
+		</td>
+	</tr>
+</table>
+
+<!-- 剩下的是這個範例中寫於 <script> 標記中的 JavaScript 程式碼, 如下 -->
+<!-- 一般來說, 這段指令稿 (scipt) 應該放在上面的文件 <head> 之中, 但 -->
+<!-- 放這裡比較容易理解, 在你讀過它的 HTML 上下文之後 -->
+<script>
+"use strict";
+
+function calculate() {
+	// 在文件中查找輸入與輸出元素
+	var amount = document.getElementById("amount");
+	var apr = document.getElementById("apr");
+	var years = document.getElementById("years");
+	var zipcode = document.getElementById("zipcode");
+	var payment = document.getElementById("payment");
+	var total = document.getElementById("total");
+	var totalinterest = document.getElementById("totalinterest");
+
+	// 從 input 元素中取得使用者輸入. 假設都是有效輸入
+	// 把利息(interest)從百分比(percentage)轉為小數(decimal)
+	// 並把年利率(annual rate)轉為月利率(monthly rate)
+	// 將還款週期(payment period)的單位從年轉為月
+	var principal = parseFloat(amount.value);
+	var interest = parseFloat(apr.value) / 100 / 12;
+	var payments = parseFloat(years.value) * 12;
+
+	// 計算月付(monthly payment)金額
+	var x = Math.pow(1 + interest, payments); // Math.pow() 計算冪次數 (powers)
+	var monthly = (principal*x*interest)/(x-1);
+
+	// 如果結果是有限數, 代表使用者輸入正確
+	// 我們有具意義的結果可顯示
+	if (isFinite(monthly)) {
+		// 填入輸出欄位, 捨入至小數第二位
+		payment.innerHTML = monthly.toFixed(2);
+		total.innerHTML = (monthly * payments).toFixed(2);
+		totalinterest.innerHTML = ((monthly*payments)-principal).toFixed(2);
+
+		// 儲存使用者輸入, 下次他們使用時可以回存這些資料
+		save(amount.value, apr.value, years.value, zipcode.value);
+
+		//廣告: 尋找並顯示本地出借人, 忽略網路錯誤
+		try	{ //捕捉大括號內發生的任何錯誤
+			getLenders(amount.value, apr.value, years.value, zipcode.value);
+		}
+		catch(e) { /* 並忽略那些錯誤 */ }
+
+		//最後, 繪製貸款餘額(loan balance) 利息及淨值支付額(equity payments)
+		chart(principal, interest, monthly, payments);
+	}
+	else{
+		// 結果為非數字(Not-a-Number)或無限大, 代表輸入
+		// 不完整或者不正確. 清除任何之前顯示的輸出
+		payment.innerHTML = ""; //清除這些元素的內容
+		total.innerHTML = "";
+		totalinterest.innerHTML = "";
+		chart();				//不帶參數, 清除圖表
+	}
+}
+
+// 將使用者的輸入存為 localStorage 物件的特性
+// 這些特性在未來使用者訪問時仍會存在
+// 如果你以本地端檔案 file: 	// URL的方式執行這個範例, 那麼
+// 這個儲存功能在某些瀏覽器中無法運行(例如 FireFox), 雖然透過 HTTP 就可以
+function save(amount, apr, years, zipcode) {
+	if (window.localStorage) { //只在瀏覽器支援時才做
+		localStorage.loan_amount = amount;
+		localStorage.loan_apr = apr;
+		localStorage.loan_years = years;
+		localStorage.loan_zipcode = zipcode;
+	}
+}
+
+// 文件首次載入時自動嘗試回存輸入欄位的資料
+window.onload = function(){
+	// 如果瀏覽器支援 localStorage 且我們有儲存的資料
+	if (window.localStorage && localStorage.loan_amount) {
+		document.getElementById("amount").value = localStorage.loan_amount;
+		document.getElementById("apr").value = localStorage.loan_apr;
+		document.getElementById("years").value = localStorage.loan_years;
+		document.getElementById("zipcode").value = localStorage.loan_zipcode;
+	}
+};
+
+
+// 將使用者輸入傳給一段伺服端 (server-side) 指令稿, 它(理論上)能夠回傳
+// 有興趣供款的本地出借人連結列表. 這個範例
+// 並未實際包含一個可運行的出借人搜尋服務實做
+// 不過如果有此服務存在, 這個函式就能夠與之並用
+function getLenders(amount, apr, years, zipcode) {
+	// 如果瀏覽器不支援 XMLHttpRequest 物件, 甚麼都不做
+	if (!window.XMLHttpRequest) return;
+
+	//尋找可以在其中顯示出借人列表的元素
+	var ad = document.getElementById("lenders");
+	if (!ad) return;							//如果找不到可以輸出的地方就離開
+	//將使用者輸入編碼為 URL 中的查詢參數(query parameters)
+	var url = "getLenders.php" + 				//服務url加上
+		"?amt=" + encodeURIComponent(amount) +	//查詢字串(query string)中的使用者資料
+		"&apr=" + encodeURIComponent(apr) +
+		"&yrs=" + encodeURIComponent(years) +
+		"&zip=" + encodeURIComponent(zipcode);
+
+	// 使用 XMLHttpRequest 物件擷取這個 URL 所指內容
+	var req = new XMLHttpRequest();				//開始一個新請求
+	req.open("GET", url);						//url 的 HTTP GET 請求
+	req.send(null);								//送出不帶主體(body)的請求
+
+	// 回傳前, 註冊一個事件處理函式, 它會在之後
+	// HTTP 伺服器的回應(response)抵達時被呼叫. 這種
+	// 非同步(asynchronous)程式設計在客戶端 JavaScript 中很常見
+	req.onreadystatechange = function () {
+		if (req.readyState == 4 && req.status == 200) {
+			//如果我們到得了這裡, 我們收到就是完全正確的 HTTP 回應
+			var response = req.responseText;	//HTTP 回應作為字串
+			var lenders = JSON.parse(response);	//將之解析為 JS 陣列
+
+			//將借出人物件所組成的陣列轉為 HTML 字串
+			var list = "";
+			for (var i = 0; i < lenders.length; i++) {
+				list += "<li><a href='" + lenders[i].url +"'>" +
+					lenders[i].name + "</a>";
+			}
+
+			//將這 HTML 顯示於上面的元素中
+			ad.innerHTML = "<ul>" + list + "</ul>";
+		}
+	}
+}
+
+// 在 HTML <canvas> 元素中繪製每月貸款餘額、利息及淨值(equity)的圖表
+// 如果呼叫時不帶引數, 就把之前所繪製的圖表清除
+function chart(principal, interest, monthly, payments) {
+	var graph = document.getElementById("graph");	//取得<canvas>標記
+	graph.width = graph.width;						//清除與重置 canvas 元素的魔法
+	//如果呼叫不帶引數, 或是這個瀏覽器不支援
+	//<canvas> 元素中的圖形, 那就即刻回傳
+	if (arguments.length == 0 || !graph.getContext) return;
+	//為 <canvas> 取得定義繪圖 API 的「context」(上下文)物件
+	var g = graph.getContext("2d");					//All drawing is done with this object
+	var width = graph.width, height = graph.height;	//取得 canvas (畫布)大小
+	//這些函式將付款數字與金額轉為像素(pixels)
+	function paymentToX(n) { return n * width/payments; }
+	function amountToY(a) { return height-(a * height/(monthly*payments*1.05)); }
+	//還款項(Payments)為從 (0,0) 至 (payments, monthly*payments) 的一直線
+	g.moveTo(paymentToX(0), amountToY(0));			//從左下開始
+	g.lineTo(paymentToX(payments), 
+			 amountToY(monthly*payments));
+	g.lineTo(paymentToX(payments), amountToY(0));	//降至右下
+	g.closePath();									//回到開頭
+	g.fillStyle = "#f88";							//亮紅色 (Light red)
+	g.fill();										//填滿此三角形
+	g.font = "bold 12px sans-serif";				//定義字型(font)
+	g.fillText("Total Interest Payments", 20, 20);	//繪製圖例中的文字
+
+	//累計值(Cumulative equity)為非線性(non-linear), 比較難畫
+	var equity = 0;									
+	g.beginPath();									//創建新形狀
+	g.moveTo(paymentToX(0), amountToY(0));			//從左下開始
+	for (var p = 1; p <= payments; p++) {
+		//找出每筆還款的利息是多少
+		var thisMonthsInterest = (principal-equity)*interest;
+		equity += (monthly - thisMonthsInterest);	//其餘就歸淨值
+		g.lineTo(paymentToX(p), amountToY(equity));	//繪線至此點
+	}
+	g.lineTo(paymentToX(payments), amountToY(0));	//繪線回 X 軸
+	g.closePath();									//回到起點
+	g.fillStyle = "green";							//使用綠色
+	g.fill();										//填滿曲線下的區域
+	g.fillText("Total Equity", 20,35);				//將之標為綠色
+
+	//如上, 再次使用迴圈, 但這次貸款餘額 (loan balance) 用粗黑線繪製
+	var bal = principal;
+	g.beginPath();
+	g.moveTo(paymentToX(0), amountToY(bal));
+	for (var p = 1; p <= payments; p++) {
+		var thisMonthsInterest = bal*interest;
+		bal -= (monthly - thisMonthsInterest);		//剩下的就歸淨值
+		g.lineTo(paymentToX(p), amountToY(bal));	//畫線至此點
+	}
+	g.lineWidth = 3;								//使用粗線
+	g.stroke();										//繪製餘額 (balance) 曲線
+	g.fillStyle = "black";							//黑色文字
+	g.fillText("Loan Balance", 20,50);				//圖例中的文字
+
+	//在 X 軸上繪製年刻度與年數
+	g.textAlign = "center";							//將文字於刻度上方置中
+	var y = amountToY(0);							// X 軸的 Y 座標
+	for (var year = 1; year*12 <= payments; year++){//對每年
+		var x = paymentToX(year*12);				//計算出刻度位置
+		g.fillRect( x-0.5, y-3, 1, 3);				//繪製刻度
+		if (year == 1) g.fillText("Year", x, y-5);	//在軸上標示
+		if (year%5 == 0 && year*12 !== payments)	//每五年一數字
+			g.fillText(String(year), x, y-5);
+	}
+
+	//沿著右邊緣標示還款額 (payment amounts)
+	g.textAlign = "right";							//文字向右對齊 (right-justify)
+	g.textBaseline = "middle";						//垂直置中	
+	var ticks = [monthly*payments, principal];		//我們會標示的兩點
+	var rightEdge = paymentToX(payments);			// Y 軸的 X 座標
+	for (var i = 0; i < ticks.length; i++) {		//對這兩點
+		var y = amountToY(ticks[i]);				//計算刻度的 Y 位置
+		g.fillRect(rightEdge-3, y-0.5, 3, 1);		//繪製刻度
+		g.fillText( String(ticks[i].toFixed(0)),	//並標示之
+					rightEdge-5, y );
+	}
+}
+</script>
+</body>
+</html>
